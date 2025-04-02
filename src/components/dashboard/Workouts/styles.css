@@ -1,0 +1,288 @@
+.workouts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.workouts-section {
+  background-color: #1a2237;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.workouts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.workouts-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: white;
+  margin: 0;
+}
+
+.workouts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.workouts-empty {
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Estilos para cartões de treino */
+.workout-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #232c43;
+  border-radius: 0.5rem;
+  border-left: 4px solid #10b981;
+  transition: all 0.2s;
+}
+
+.workout-card:hover {
+  background-color: #2c3651;
+}
+
+.workout-completed {
+  border-left-color: #9ca3af;
+  opacity: 0.75;
+}
+
+.workout-date {
+  min-width: 100px;
+  padding-right: 1rem;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  border-right: 1px solid #2c3651;
+}
+
+.workout-content {
+  flex: 1;
+  padding: 0 1rem;
+}
+
+.workout-type {
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.25rem;
+}
+
+.workout-description {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.workout-complete-button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.workout-complete-button:hover {
+  background-color: #059669;
+}
+
+.workout-completed-badge {
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.5rem;
+}
+
+/* Estilos para cartões de histórico */
+.workout-history-card {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: #232c43;
+  border-radius: 0.5rem;
+  border-left: 4px solid #6366f1;
+}
+
+/* Estilos para controle de peso */
+.workout-weight-button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.workout-weight-button:hover {
+  background-color: #059669;
+}
+
+.weight-input-container {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #232c43;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.weight-input {
+  padding: 0.75rem;
+  background-color: #1a2237;
+  border: 1px solid #2c3651;
+  border-radius: 0.375rem;
+  color: white;
+  font-size: 0.875rem;
+  width: 100%;
+}
+
+.weight-input:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+.weight-input-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.weight-save-button {
+  background-color: #10b981;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.weight-save-button:hover {
+  background-color: #059669;
+}
+
+.weight-cancel-button {
+  background-color: #4b5563;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.weight-cancel-button:hover {
+  background-color: #374151;
+}
+
+.weight-summary {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #232c43;
+  border-radius: 0.5rem;
+}
+
+.weight-last-record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weight-current,
+.weight-difference {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.weight-label {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.weight-value {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.weight-change {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.weight-loss {
+  color: #10b981;
+}
+
+.weight-gain {
+  color: #ef4444;
+}
+
+.weight-history {
+  margin-top: 1.5rem;
+}
+
+.weight-history-title {
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.weight-chart {
+  padding: 1rem;
+  background-color: #232c43;
+  border-radius: 0.5rem;
+}
+
+.weight-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.weight-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #2c3651;
+}
+
+.weight-entry:last-child {
+  border-bottom: none;
+}
+
+.weight-entry-date {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.weight-entry-value {
+  color: white;
+  font-weight: 500;
+}
+
+.weight-empty {
+  color: #9ca3af;
+  font-style: italic;
+  text-align: center;
+  padding: 1rem 0;
+}
