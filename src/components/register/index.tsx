@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import logo from "../../../public/logo.png";
 import "./styles.css";
 
 export default function RegisterForm() {
@@ -131,17 +133,14 @@ export default function RegisterForm() {
 
   return (
     <div className="register-container">
-      <div className="register-logo-container">
-        <svg className="register-logo" fill="currentColor" viewBox="0 0 20 20">
-          <path
-            fillRule="evenodd"
-            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-            clipRule="evenodd"
-          />
-        </svg>
+      <div className="login-logo-container">
+        <Image
+          src={logo}
+          alt="Personal Pocket Logo"
+          className="login-logo"
+          priority
+        />
       </div>
-
-      <h2 className="register-title">FitTrainer Pro - Cadastro</h2>
 
       <form onSubmit={handleSubmit} className="register-form">
         <div className="register-form-grid">
@@ -359,6 +358,17 @@ export default function RegisterForm() {
         <div className="register-button-container">
           <button type="submit" className="register-button">
             Cadastrar
+          </button>
+        </div>
+
+        <div className="register-switch-container">
+          <span className="register-switch-text">Já tem uma conta?</span>
+          <button
+            type="button"
+            className="register-switch-button"
+            onClick={() => router.push("/")}
+          >
+            Faça Login
           </button>
         </div>
       </form>

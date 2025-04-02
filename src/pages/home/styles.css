@@ -9,54 +9,78 @@
 }
 
 .home-tab-container {
-  padding: 2rem 0 1rem 0;
+  width: 100%;
+  max-width: 28rem;
+  padding-bottom: 0;
   display: flex;
   justify-content: center;
+  margin-bottom: -1px;
+  position: relative;
+  z-index: 2;
 }
 
 .home-tab-buttons {
   display: inline-flex;
-  border-radius: 0.375rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  width: 100%;
 }
 
 .home-tab-button {
-  padding: 0.5rem 1rem;
+  flex: 1;
+  padding: 0.75rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
   border: none;
   cursor: pointer;
+  text-align: center;
+  letter-spacing: 0.5px;
+  font-family: "Montserrat", "Segoe UI", sans-serif;
 }
 
 .home-tab-button-left {
-  border-radius: 0.5rem 0 0 0.5rem;
+  border-radius: 0.5rem 0 0 0;
 }
 
 .home-tab-button-right {
-  border-radius: 0 0.5rem 0.5rem 0;
+  border-radius: 0 0.5rem 0 0;
 }
 
 .home-tab-active {
-  background-color: var(--primary-color);
-  color: white;
+  background-color: var(--bg-component);
+  color: var(--primary-color);
+  font-weight: 600;
+  box-shadow: 0 -1px 0 var(--primary-color);
 }
 
 .home-tab-inactive {
-  background-color: var(--bg-component);
+  background-color: rgba(26, 34, 55, 0.7);
   color: var(--text-light);
 }
 
 .home-tab-inactive:hover {
-  background-color: #2a3746;
+  background-color: rgba(42, 55, 70, 0.9);
 }
 
 .home-form-container {
   width: 100%;
   max-width: 28rem;
   background-color: var(--bg-component);
-  border-radius: 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
     0 2px 4px -1px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+  z-index: 1;
+}
+
+/* Adicionar fonte personalizada */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+/* Sobrescrever os estilos do título do login e cadastro */
+.login-title,
+.register-title {
+  font-family: "Montserrat", "Segoe UI", sans-serif;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }

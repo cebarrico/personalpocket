@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import "./styles.css";
 
 // Importar os componentes
@@ -20,6 +21,7 @@ import {
 import Workouts from "@/components/dashboard/Workouts";
 import Subscription from "@/components/dashboard/Subscription";
 import SubscriptionModal from "@/components/dashboard/Modals/SubscriptionModal";
+import logo from "../../../public/logo.png";
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("workouts");
@@ -155,6 +157,13 @@ export default function Dashboard() {
     const { userType } = router.query;
     const type = typeof userType === "string" ? userType : "professor"; // Default para professor se não especificado
     setUserType(type);
+
+    // Definir a aba ativa com base no tipo de usuário
+    if (type === "professor") {
+      setActiveTab("schedule");
+    } else {
+      setActiveTab("workouts");
+    }
 
     // Simular usuário logado
     if (type === "aluno") {
@@ -384,7 +393,14 @@ export default function Dashboard() {
 
       <header className="dashboard-header">
         <div className="dashboard-header-left">
-          <div className="dashboard-logo">FitTrainer Pro</div>
+          <div className="login-logo-container">
+            <Image
+              src={logo}
+              alt="Personal Pocket Logo"
+              className="login-logo"
+              priority
+            />
+          </div>
           <nav className="dashboard-nav">
             {userType === "aluno" && (
               <button

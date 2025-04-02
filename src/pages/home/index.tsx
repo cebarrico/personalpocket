@@ -12,7 +12,7 @@ export default function HomePage() {
   return (
     <div className="home-container">
       <Head>
-        <title>FitTrainer Pro | {showLogin ? "Login" : "Cadastro"}</title>
+        <title>Personal Pocket | {showLogin ? "Login" : "Cadastro"}</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
