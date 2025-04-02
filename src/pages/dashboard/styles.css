@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative; /* Para posicionamento do menu mobile */
 }
 
 /* Cabeçalho */
@@ -23,6 +24,7 @@
 .dashboard-header-left {
   display: flex;
   align-items: center;
+  justify-content: space-around;
   gap: 1rem;
 }
 .login-logo-container {
@@ -504,5 +506,182 @@
 
   .profile-tab-button {
     flex: 1;
+  }
+}
+
+/* Menu mobile */
+.mobile-menu-button {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mobile-menu-button:hover {
+  background-color: #232c43;
+}
+
+.mobile-menu {
+  position: absolute;
+  top: 85px; /* Ajuste conforme a altura do header */
+  left: 0;
+  width: 100%;
+  background-color: #1a2237;
+  z-index: 50;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.mobile-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.mobile-nav-button {
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  color: #d1d5db;
+  text-align: left;
+  border-bottom: 1px solid #2c3651;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 1rem;
+}
+
+.mobile-nav-button:hover {
+  background-color: #232c43;
+  color: white;
+}
+
+.mobile-nav-button-active {
+  background-color: #10b981; /* Verde */
+  color: white;
+}
+
+.mobile-user-info {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-top: 1px solid #2c3651;
+  margin-top: 1rem;
+}
+
+.mobile-notification {
+  margin: 0.5rem 0;
+  position: relative;
+}
+
+.mobile-notification-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #232c43;
+  border: none;
+  border-radius: 0.375rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  position: relative;
+}
+
+.mobile-notification-button:hover {
+  background-color: #2c3651;
+}
+
+.notification-badge {
+  background-color: #ef4444; /* Vermelho para notificações */
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 9999px;
+  padding: 0.125rem 0.375rem;
+  font-weight: 600;
+  min-width: 1.5rem;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-notification-button .notification-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  transform: translate(25%, -25%);
+}
+
+.mobile-logout-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: #991b1b; /* Vermelho escuro */
+  border: none;
+  border-radius: 0.375rem;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.mobile-logout-button:hover {
+  background-color: #b91c1c; /* Vermelho mais claro */
+}
+
+/* Media queries para responsividade */
+@media (max-width: 768px) {
+  .dashboard-header {
+    padding: 0.75rem 1rem;
+  }
+
+  .login-logo-container {
+    flex-shrink: 0;
+  }
+
+  .login-logo {
+    width: 100px;
+    height: 80px;
+  }
+
+  .mobile-menu-button {
+    display: block;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .desktop-header-right {
+    display: none;
+  }
+
+  .dashboard-main {
+    padding-top: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 85px;
+    height: calc(100vh - 85px);
+    overflow-y: auto;
   }
 }

@@ -27,6 +27,7 @@ export default function Workouts({ userType, userId }: WorkoutsProps) {
   const [currentWeight, setCurrentWeight] = useState<string>("");
   const [weightHistory, setWeightHistory] = useState<WeightRecord[]>([]);
   const [showWeightInput, setShowWeightInput] = useState(false);
+  const [activeTab, setActiveTab] = useState<string>("current");
 
   // Carregar dados simulados para demonstração
   useEffect(() => {
@@ -170,170 +171,210 @@ export default function Workouts({ userType, userId }: WorkoutsProps) {
 
   return (
     <div className="workouts-container">
-      <div className="workouts-section">
-        <div className="workouts-header">
-          <h3 className="workouts-title">Treinos da Semana</h3>
+      {userType === "aluno" && (
+        <div className="workouts-tabs">
+          <button
+            className={`workouts-tab-button ${
+              activeTab === "current" ? "workouts-tab-active" : ""
+            }`}
+            onClick={() => setActiveTab("current")}
+          >
+            Treinos Atuais
+          </button>
+          <button
+            className={`workouts-tab-button ${
+              activeTab === "history" ? "workouts-tab-active" : ""
+            }`}
+            onClick={() => setActiveTab("history")}
+          >
+            Histórico
+          </button>
+          <button
+            className={`workouts-tab-button ${
+              activeTab === "weight" ? "workouts-tab-active" : ""
+            }`}
+            onClick={() => setActiveTab("weight")}
+          >
+            Evolução de Peso
+          </button>
         </div>
-        <div className="workouts-list">
-          {weekWorkouts.length === 0 ? (
-            <p className="workouts-empty">
-              Nenhum treino programado para esta semana.
-            </p>
-          ) : (
-            weekWorkouts.map((workout) => (
-              <div
-                key={workout.id}
-                className={`workout-card ${
-                  workout.completed ? "workout-completed" : ""
-                }`}
-              >
-                <div className="workout-date">{formatDate(workout.date)}</div>
-                <div className="workout-content">
-                  <div className="workout-type">{workout.type}</div>
-                  <div className="workout-description">
-                    {workout.description}
-                  </div>
-                </div>
-                {!workout.completed && (
-                  <button
-                    className="workout-complete-button"
-                    onClick={() => markWorkoutAsCompleted(workout.id)}
-                  >
-                    Concluir
-                  </button>
-                )}
-                {workout.completed && (
-                  <div className="workout-completed-badge">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))
-          )}
-        </div>
-      </div>
+      )}
 
-      <div className="workouts-section">
-        <div className="workouts-header">
-          <h3 className="workouts-title">Histórico de Treinos</h3>
-        </div>
-        <div className="workouts-list">
-          {completedWorkouts.length === 0 ? (
-            <p className="workouts-empty">Nenhum treino concluído ainda.</p>
-          ) : (
-            completedWorkouts.map((workout) => (
-              <div key={workout.id} className="workout-history-card">
-                <div className="workout-date">{formatDate(workout.date)}</div>
-                <div className="workout-content">
-                  <div className="workout-type">{workout.type}</div>
-                  <div className="workout-description">
-                    {workout.description}
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-
-      <div className="workouts-section">
-        <div className="workouts-header">
-          <h3 className="workouts-title">Controle de Peso</h3>
-          {!showWeightInput && (
-            <button
-              className="workout-weight-button"
-              onClick={() => setShowWeightInput(true)}
-            >
-              Registrar Peso
-            </button>
-          )}
-        </div>
-
-        {showWeightInput && (
-          <div className="weight-input-container">
-            <input
-              type="number"
-              step="0.1"
-              className="weight-input"
-              placeholder="Peso atual (kg)"
-              value={currentWeight}
-              onChange={(e) => setCurrentWeight(e.target.value)}
-            />
-            <div className="weight-input-buttons">
-              <button
-                className="weight-save-button"
-                onClick={saveCurrentWeight}
-              >
-                Salvar
-              </button>
-              <button
-                className="weight-cancel-button"
-                onClick={() => setShowWeightInput(false)}
-              >
-                Cancelar
-              </button>
-            </div>
+      {(activeTab === "current" || userType !== "aluno") && (
+        <div className="workouts-section">
+          <div className="workouts-header">
+            <h3 className="workouts-title">Treinos da Semana</h3>
           </div>
-        )}
-
-        <div className="weight-summary">
-          {getLastWeight() && (
-            <div className="weight-last-record">
-              <div className="weight-current">
-                <span className="weight-label">Peso Atual:</span>
-                <span className="weight-value">{getLastWeight()} kg</span>
-              </div>
-
-              {getWeightDifference() !== null && (
-                <div className="weight-difference">
-                  <span className="weight-label">Última Variação:</span>
-                  <span
-                    className={`weight-change ${
-                      getWeightDifference()! < 0 ? "weight-loss" : "weight-gain"
-                    }`}
-                  >
-                    {getWeightDifference()! < 0 ? "" : "+"}
-                    {getWeightDifference()!.toFixed(1)} kg
-                  </span>
+          <div className="workouts-list">
+            {weekWorkouts.length === 0 ? (
+              <p className="workouts-empty">
+                Nenhum treino programado para esta semana.
+              </p>
+            ) : (
+              weekWorkouts.map((workout) => (
+                <div
+                  key={workout.id}
+                  className={`workout-card ${
+                    workout.completed ? "workout-completed" : ""
+                  }`}
+                >
+                  <div className="workout-date">{formatDate(workout.date)}</div>
+                  <div className="workout-content">
+                    <div className="workout-type">{workout.type}</div>
+                    <div className="workout-description">
+                      {workout.description}
+                    </div>
+                  </div>
+                  {!workout.completed && (
+                    <button
+                      className="workout-complete-button"
+                      onClick={() => markWorkoutAsCompleted(workout.id)}
+                    >
+                      Concluir
+                    </button>
+                  )}
+                  {workout.completed && (
+                    <div className="workout-completed-badge">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                      </svg>
+                    </div>
+                  )}
                 </div>
-              )}
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "history" && userType === "aluno" && (
+        <div className="workouts-section">
+          <div className="workouts-header">
+            <h3 className="workouts-title">Histórico de Treinos</h3>
+          </div>
+          <div className="workouts-list">
+            {completedWorkouts.length === 0 ? (
+              <p className="workouts-empty">Nenhum treino concluído ainda.</p>
+            ) : (
+              completedWorkouts.map((workout) => (
+                <div key={workout.id} className="workout-history-card">
+                  <div className="workout-date">{formatDate(workout.date)}</div>
+                  <div className="workout-content">
+                    <div className="workout-type">{workout.type}</div>
+                    <div className="workout-description">
+                      {workout.description}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
+
+      {activeTab === "weight" && userType === "aluno" && (
+        <div className="workouts-section">
+          <div className="workouts-header">
+            <h3 className="workouts-title">Evolução de Peso</h3>
+            {!showWeightInput && (
+              <button
+                className="workout-weight-button"
+                onClick={() => setShowWeightInput(true)}
+              >
+                Registrar Peso
+              </button>
+            )}
+          </div>
+
+          {showWeightInput && (
+            <div className="weight-input-container">
+              <input
+                type="number"
+                step="0.1"
+                className="weight-input"
+                placeholder="Seu peso atual (kg)"
+                value={currentWeight}
+                onChange={(e) => setCurrentWeight(e.target.value)}
+              />
+              <div className="weight-input-buttons">
+                <button
+                  className="weight-save-button"
+                  onClick={saveCurrentWeight}
+                >
+                  Salvar
+                </button>
+                <button
+                  className="weight-cancel-button"
+                  onClick={() => setShowWeightInput(false)}
+                >
+                  Cancelar
+                </button>
+              </div>
             </div>
           )}
-        </div>
 
-        <div className="weight-history">
-          <h4 className="weight-history-title">Histórico de Peso</h4>
-          <div className="weight-chart">
+          {getLastWeight() !== null && (
+            <div className="weight-summary">
+              <div className="weight-last-record">
+                <div className="weight-current">
+                  <span className="weight-label">Peso Atual</span>
+                  <span className="weight-value">{getLastWeight()} kg</span>
+                </div>
+
+                {getWeightDifference() !== null && (
+                  <div className="weight-difference">
+                    <span className="weight-label">Diferença</span>
+                    <span
+                      className={`weight-change ${
+                        getWeightDifference()! < 0
+                          ? "weight-loss"
+                          : "weight-gain"
+                      }`}
+                    >
+                      {getWeightDifference()! > 0 ? "+" : ""}
+                      {getWeightDifference()?.toFixed(1)} kg
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          <div className="weight-history">
+            <h4 className="weight-history-title">Histórico de Registros</h4>
             {weightHistory.length > 0 ? (
               <div className="weight-entries">
                 {weightHistory.map((record, index) => (
                   <div key={index} className="weight-entry">
-                    <div className="weight-entry-date">
+                    <span className="weight-entry-date">
                       {formatDate(record.date)}
-                    </div>
-                    <div className="weight-entry-value">{record.weight} kg</div>
+                    </span>
+                    <span className="weight-entry-value">
+                      {record.weight} kg
+                    </span>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="weight-empty">Nenhum registro de peso ainda.</p>
+              <p className="weight-empty">
+                Nenhum registro de peso encontrado. Registre seu peso atual para
+                começar a acompanhar sua evolução.
+              </p>
             )}
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -38,11 +38,19 @@ export default function NotificationSystem({
       }
     }
 
+    // Desabilitar scroll do body quando as notificações estão abertas em telas pequenas
+    if (showNotifications && window.innerWidth <= 768) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
     };
-  }, [setShowNotifications]);
+  }, [showNotifications, setShowNotifications]);
 
   // Contador de notificações não lidas
   const unreadCount = notifications.filter(
@@ -79,58 +87,89 @@ export default function NotificationSystem({
       </button>
 
       {showNotifications && (
-        <div className="notification-dropdown">
-          <div className="notification-header">
-            <h3 className="notification-title">Notificações</h3>
-            <button
-              onClick={clearAllNotifications}
-              disabled={notifications.length === 0}
-              className={`notification-action-button ${
-                notifications.length === 0
-                  ? "notification-action-button-disabled"
-                  : ""
-              }`}
-            >
-              Limpar todas
-            </button>
-          </div>
+        <>
+          {/* Overlay para dispositivos móveis */}
+          <div
+            className="notification-overlay"
+            onClick={() => setShowNotifications(false)}
+          ></div>
 
-          <div className="notification-list">
-            {notifications.length === 0 ? (
-              <div className="notification-empty">
-                Não há notificações no momento.
-              </div>
-            ) : (
-              <div className="notification-items">
-                {notifications.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className={`notification-item ${
-                      !notification.read ? "notification-item-unread" : ""
-                    }`}
+          <div className="notification-dropdown">
+            <div className="notification-header">
+              <h3 className="notification-title">Notificações</h3>
+              <div className="notification-header-actions">
+                <button
+                  onClick={clearAllNotifications}
+                  disabled={notifications.length === 0}
+                  className={`notification-action-button ${
+                    notifications.length === 0
+                      ? "notification-action-button-disabled"
+                      : ""
+                  }`}
+                >
+                  Limpar todas
+                </button>
+                <button
+                  className="notification-close-button"
+                  onClick={() => setShowNotifications(false)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <div className="notification-content">
-                      <p className="notification-message">
-                        {notification.message}
-                      </p>
-                      <span className="notification-time">
-                        {notification.time}
-                      </span>
-                    </div>
-                    {!notification.read && (
-                      <button
-                        onClick={() => markNotificationAsRead(notification.id)}
-                        className="notification-read-button"
-                      >
-                        Marcar como lida
-                      </button>
-                    )}
-                  </div>
-                ))}
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
               </div>
-            )}
+            </div>
+
+            <div className="notification-list">
+              {notifications.length === 0 ? (
+                <div className="notification-empty">
+                  Não há notificações no momento.
+                </div>
+              ) : (
+                <div className="notification-items">
+                  {notifications.map((notification) => (
+                    <div
+                      key={notification.id}
+                      className={`notification-item ${
+                        !notification.read ? "notification-item-unread" : ""
+                      }`}
+                    >
+                      <div className="notification-content">
+                        <p className="notification-message">
+                          {notification.message}
+                        </p>
+                        <span className="notification-time">
+                          {notification.time}
+                        </span>
+                      </div>
+                      {!notification.read && (
+                        <button
+                          onClick={() =>
+                            markNotificationAsRead(notification.id)
+                          }
+                          className="notification-read-button"
+                        >
+                          Marcar como lida
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       )}
     </div>
   );

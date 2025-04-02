@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -24,7 +24,7 @@ import SubscriptionModal from "@/components/dashboard/Modals/SubscriptionModal";
 import logo from "../../../public/logo.png";
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState("workouts");
+  const [activeTab, setActiveTab] = useState<string>("schedule");
   const [userType, setUserType] = useState<string>(""); // Alterar para aceitar string genérica
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
@@ -37,7 +37,7 @@ export default function Dashboard() {
   const [selectedStudentToAdd, setSelectedStudentToAdd] = useState<any>(null);
   const [showBookSlotModal, setShowBookSlotModal] = useState(false); // Modal para alunos reservarem horários
   const [notifications, setNotifications] = useState<any[]>([]); // Para notificações
-  const [showNotifications, setShowNotifications] = useState(false); // Para exibir o dropdown de notificações
+  const [showNotifications, setShowNotifications] = useState<boolean>(false); // Para exibir o dropdown de notificações
   const [notesForBooking, setNotesForBooking] = useState(""); // Notas para reserva de horário
   const [myStudents, setMyStudents] = useState<any[]>([]); // Lista de alunos do professor
   const [showAddStudentModal, setShowAddStudentModal] = useState(false); // Modal para adicionar alunos à lista do professor
@@ -47,7 +47,11 @@ export default function Dashboard() {
   const [selectedStudentForWorkouts, setSelectedStudentForWorkouts] =
     useState<any>(null);
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false);
-  const [showSubscriptionTab, setShowSubscriptionTab] = useState(false);
+  const [showSubscriptionTab, setShowSubscriptionTab] =
+    useState<boolean>(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   // Lista de alunos disponíveis
@@ -384,6 +388,34 @@ export default function Dashboard() {
     setShowSubscriptionTab(false);
   };
 
+  // Fechar menu mobile ao clicar fora
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        mobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        mobileButtonRef.current &&
+        !mobileButtonRef.current.contains(event.target as Node)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    }
+
+    // Desabilitar scroll do body quando o menu mobile está aberto
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <div className="dashboard-container">
       <Head>
@@ -398,10 +430,34 @@ export default function Dashboard() {
               src={logo}
               alt="Personal Pocket Logo"
               className="login-logo"
-              fetchPriority="high"
+              priority
             />
           </div>
-          <nav className="dashboard-nav">
+
+          {/* Botão de menu hamburguer para mobile */}
+          <button
+            className="mobile-menu-button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            ref={mobileButtonRef}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          <nav className="dashboard-nav desktop-nav">
             {userType === "aluno" && (
               <button
                 onClick={() => handleTabChange("workouts")}
@@ -441,7 +497,7 @@ export default function Dashboard() {
           </nav>
         </div>
 
-        <div className="dashboard-header-right">
+        <div className="dashboard-header-right desktop-header-right">
           {/* Componente de notificações */}
           <NotificationSystem
             notifications={notifications}
@@ -486,6 +542,121 @@ export default function Dashboard() {
           </button>
         </div>
       </header>
+
+      {/* Menu móvel */}
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="mobile-menu-overlay"
+            onClick={() => setMobileMenuOpen(false)}
+          ></div>
+          <div className="mobile-menu" ref={mobileMenuRef}>
+            <nav className="mobile-nav">
+              {userType === "aluno" && (
+                <button
+                  onClick={() => {
+                    handleTabChange("workouts");
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`mobile-nav-button ${
+                    activeTab === "workouts" ? "mobile-nav-button-active" : ""
+                  }`}
+                >
+                  Treinos
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  handleTabChange("schedule");
+                  setMobileMenuOpen(false);
+                }}
+                className={`mobile-nav-button ${
+                  activeTab === "schedule" ? "mobile-nav-button-active" : ""
+                }`}
+              >
+                Agenda
+              </button>
+              {userType === "professor" && (
+                <button
+                  onClick={() => {
+                    handleTabChange("students");
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`mobile-nav-button ${
+                    activeTab === "students" ? "mobile-nav-button-active" : ""
+                  }`}
+                >
+                  Alunos
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  handleTabChange("profile");
+                  setMobileMenuOpen(false);
+                }}
+                className={`mobile-nav-button ${
+                  activeTab === "profile" ? "mobile-nav-button-active" : ""
+                }`}
+              >
+                Perfil
+              </button>
+
+              <div className="mobile-user-info">
+                <div className="dashboard-user">
+                  <div className="dashboard-avatar">
+                    {loggedUser.name.substring(0, 2).toUpperCase()}
+                  </div>
+                  <div className="dashboard-user-info">
+                    <div className="dashboard-user-name">{loggedUser.name}</div>
+                    <div className="dashboard-user-role">
+                      {getUserRoleName(userType)}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mobile-notification">
+                  <button
+                    className="mobile-notification-button"
+                    onClick={() => {
+                      setShowNotifications(!showNotifications);
+                      setMobileMenuOpen(false);
+                    }}
+                  >
+                    Notificações
+                    {notifications.filter((n) => !n.read).length > 0 && (
+                      <span className="notification-badge">
+                        {notifications.filter((n) => !n.read).length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                <button
+                  onClick={() => router.push("/")}
+                  className="mobile-logout-button"
+                >
+                  Sair
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                    <polyline points="16 17 21 12 16 7"></polyline>
+                    <line x1="21" y1="12" x2="9" y2="12"></line>
+                  </svg>
+                </button>
+              </div>
+            </nav>
+          </div>
+        </>
+      )}
 
       <main className="dashboard-main">
         {activeTab === "schedule" && (
