@@ -398,7 +398,7 @@ export default function Dashboard() {
               src={logo}
               alt="Personal Pocket Logo"
               className="login-logo"
-              priority
+              fetchPriority="high"
             />
           </div>
           <nav className="dashboard-nav">
